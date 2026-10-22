@@ -15,7 +15,12 @@
 // El sobre deja de estar disponible el 29/10/2026 a las 22:59 (hora del Pacífico).
 const FIN_DEL_SOBRE = new Date('2026-10-30T05:59:00Z');
 
-const TOTAL_CARTAS = 402;
+/*
+ * Sólo se llevan las metalizadas, que son las 166 que van de la 237 a la 402.
+ * Las 236 primeras son las normales de expansiones anteriores y las tienen los
+ * dos enteras, así que no se enseñan: estorbaban más que ayudaban.
+ */
+const TOTAL_CARTAS = 166;
 
 // Lo que cuesta cambiar una carta por puntos de sobre, según su rareza.
 const COSTE_POR_RAREZA = { 1: 35, 2: 70, 3: 150, 4: 500 };

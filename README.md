@@ -13,8 +13,8 @@ con puntos de sobre.
 | `estilos.css` | Los estilos. |
 | `app.js` | Toda la lógica: marcar, filtrar y la simulación de puntos. |
 | `config.js` | La dirección y la clave publicable del proyecto de Supabase. |
-| `cartas.json` | Las 402 cartas: número, nombre y rareza. |
-| `img/` | Una miniatura por carta, `1.jpg` … `402.jpg`. |
+| `cartas.json` | Las 166 cartas metalizadas: número, nombre y rareza. |
+| `img/` | Una miniatura por carta, `237.jpg` … `402.jpg`. |
 
 No hay nada que compilar ni ninguna librería que se pueda quedar obsoleta: son
 cuatro ficheros que el navegador abre tal cual. Es a propósito, para que esto
@@ -48,9 +48,13 @@ siga funcionando dentro de unos años sin tocar nada.
 
 ## Los datos de la expansión
 
-- **402 cartas**, todas de diamante. Las 27 secretas (estrella y corona) no
-  entran: no se completan y con puntos no salen a cuenta.
-- Puntos de sobre por rareza: **♦ 35 · ♦♦ 70 · ♦♦♦ 150 · ♦♦♦♦ 500**.
+- La expansión trae **429 cartas**: 402 numeradas más 27 secretas. Pero aquí
+  **sólo se llevan las 166 que van de la 237 a la 402**, que son las
+  **metalizadas**. Cada una tiene su gemela normal entre la 1 y la 236, y esas
+  las tienen los dos enteras, así que estorbaban. Las 27 secretas (estrella y
+  corona) tampoco entran: no se completan y con puntos no salen a cuenta.
+- Puntos de sobre por rareza: **♦ 35 · ♦♦ 70 · ♦♦♦ 150**. Entre las 166 no hay
+  ninguna ♦♦♦♦: son 71 de ♦, 65 de ♦♦ y 30 de ♦♦♦, **11.535 puntos** en total.
 - Cada sobre abierto da 5 puntos; se guardan hasta 2.500 por expansión.
 - El sobre está disponible del **30/09/2026 al 29/10/2026**. Los puntos **no
   caducan** cuando cierra: lo que se acaba es poder abrir más sobres.
