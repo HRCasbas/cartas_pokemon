@@ -33,9 +33,15 @@ const JUGADORES = {
 const CLAVE_JUGADOR = 'cartas.jugador';
 const CLAVE_MARCAS = 'cartas.marcas';
 const CLAVE_PALABRA = 'cartas.palabra';
+const CLAVE_CHISTE = 'cartas.chiste';
 const SEGUNDOS_ENTRE_REFRESCOS = 30;
 
+// Desde este día se cuentan los chistes: uno por día, y al llegar al último
+// se vuelve al primero.
+const PRIMER_DIA = Date.UTC(2026, 9, 22);
+
 let cartas = [];
+let chistes = [];
 // La palabra que abre la puerta. Va en cada petición y el servidor la comprueba.
 let palabra = '';
 // Conjunto de claves "numero|jugador" con las cartas registradas.
@@ -438,6 +444,50 @@ async function refrescar(silencioso) {
   }
 }
 
+// ---------------------------------------------------------- Chiste del día
+
+// Medianoche de hoy en hora local, para que el chiste cambie al cambiar el día.
+function diaDeHoy() {
+  const ahora = new Date();
+  return Date.UTC(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+}
+
+function chisteDeHoy() {
+  if (chistes.length === 0) return '';
+  const dias = Math.floor((diaDeHoy() - PRIMER_DIA) / 86400000);
+  const indice = ((dias % chistes.length) + chistes.length) % chistes.length;
+  return chistes[indice];
+}
+
+function ensenarChiste() {
+  const texto = chisteDeHoy();
+  if (!texto) return;
+  document.getElementById('chiste-texto').textContent = texto;
+  document.getElementById('chiste').classList.remove('oculto');
+}
+
+function cerrarChiste() {
+  document.getElementById('chiste').classList.add('oculto');
+}
+
+// Sólo salta la primera vez que se entra cada día.
+function quizaElChiste() {
+  const hoy = String(diaDeHoy());
+  let visto = null;
+  try {
+    visto = localStorage.getItem(CLAVE_CHISTE);
+  } catch (error) {
+    // Sin memoria del navegador saldrá cada vez; tampoco pasa nada.
+  }
+  if (visto === hoy) return;
+  ensenarChiste();
+  try {
+    localStorage.setItem(CLAVE_CHISTE, hoy);
+  } catch (error) {
+    // Nada.
+  }
+}
+
 // ------------------------------------------------------------------- Puerta
 
 function pedirPalabra(queja) {
@@ -500,6 +550,7 @@ function elegirJugador(cual) {
   document.getElementById('portada').classList.add('oculto');
   document.getElementById('quien-soy').textContent = JUGADORES[cual].nombre;
   pintarTodo();
+  quizaElChiste();
 }
 
 function arrancarRefrescoAutomatico() {
@@ -522,6 +573,21 @@ async function arrancar() {
     avisar('No se ha podido cargar la lista de cartas.');
     return;
   }
+
+  try {
+    const respuesta = await fetch('chistes.json', { cache: 'no-store' });
+    chistes = await respuesta.json();
+  } catch (error) {
+    // Sin chistes se sigue igual: la web va de cartas.
+    document.getElementById('abrir-chiste').classList.add('oculto');
+  }
+
+  document.getElementById('cerrar-chiste').addEventListener('click', cerrarChiste);
+  document.getElementById('abrir-chiste').addEventListener('click', ensenarChiste);
+  document.getElementById('chiste').addEventListener('click', function (evento) {
+    // Tocar fuera de la caja también lo cierra.
+    if (evento.target.id === 'chiste') cerrarChiste();
+  });
 
   document.getElementById('forma-palabra').addEventListener('submit', async function (evento) {
     evento.preventDefault();

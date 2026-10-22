@@ -40,7 +40,12 @@
       <h1>Deluxe Pack: Mega</h1>
       <p class="sub">166 metalizadas · <span id="cuenta-atras"></span></p>
     </div>
-    <button id="quien-soy" class="quien-soy" title="Cambiar de jugador"></button>
+    <div class="botones-cabecera">
+      <button id="abrir-chiste" class="cara-boton" title="El chiste del día">
+        <img src="img/hector.webp" alt="Héctor" width="36" height="36">
+      </button>
+      <button id="quien-soy" class="quien-soy" title="Cambiar de jugador"></button>
+    </div>
   </div>
 
   <div id="aviso" class="aviso oculto"></div>
@@ -111,6 +116,16 @@
   <button id="actualizar" class="actualizar">Actualizar</button>
   <p>Las cartas y sus imágenes son de <a href="https://www.serebii.net/tcgpocket/deluxepackmega/" rel="noreferrer">Serebii</a>. Página personal, sin ánimo de lucro.</p>
 </footer>
+
+<!-- El chiste del día. Sale una vez al día en cada móvil. -->
+<div id="chiste" class="chiste oculto">
+  <div class="chiste-caja">
+    <img class="chiste-cara" src="img/hector.webp" alt="Héctor" width="110" height="110">
+    <p class="chiste-titulo">El chiste del día</p>
+    <p id="chiste-texto" class="chiste-texto"></p>
+    <button id="cerrar-chiste" class="jugador-boton">Ja</button>
+  </div>
+</div>
 
 <script src="config.js"></script>
 <script src="app.js"></script>

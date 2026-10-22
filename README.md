@@ -15,6 +15,7 @@ con puntos de sobre.
 | `config.js` | La dirección y la clave publicable del proyecto de Supabase. |
 | `cartas.json` | Las 166 cartas metalizadas: número, nombre y rareza. |
 | `img/` | Una miniatura por carta, `237.jpg` … `402.jpg`. |
+| `chistes.json` | Los 100 chistes, uno por día. |
 
 No hay nada que compilar ni ninguna librería que se pueda quedar obsoleta: son
 cuatro ficheros que el navegador abre tal cual. Es a propósito, para que esto
@@ -31,6 +32,9 @@ siga funcionando dentro de unos años sin tocar nada.
   `clave_correcta()` de [`supabase.sql`](supabase.sql) con la nueva.
 - Cada uno entra, dice quién es (se guarda en el móvil) y toca una carta para
   marcarla o desmarcarla. Sólo marca las suyas.
+- Al entrar, una vez al día, sale la cara de Héctor con un chiste. Hay 100 y
+  van por días desde el 22/10/2026; al llegar al último se vuelve al primero.
+  El botón redondo de la cabecera lo abre cuando se quiera.
 - Las marcas y los puntos viven en **Supabase**, así que los dos ven lo mismo.
   La página se actualiza sola cada 30 segundos y al volver a ella.
 - La simulación reparte los puntos de los dos juntos, **empezando por las
