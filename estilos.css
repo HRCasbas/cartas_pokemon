@@ -130,7 +130,6 @@ body {
   width: 0;
   background: var(--acento);
   border-radius: 999px;
-  transition: width 0.25s;
 }
 
 .progreso-texto { margin: 0.5rem 0 0; font-size: 0.95rem; }
@@ -280,12 +279,13 @@ body {
   aspect-ratio: 367 / 512;
   object-fit: cover;
   background: #0b1120;
-  opacity: 0.4;
-  transition: opacity 0.12s;
+  /* Sin registrar se ve en gris, pero se ve: son justo las que hay que reconocer. */
+  filter: grayscale(0.85) brightness(0.72);
+  transition: filter 0.12s;
 }
 
 .carta.mia { border-color: var(--acento); background: var(--fondo-tarjeta-mia); }
-.carta.mia img { opacity: 1; }
+.carta.mia img { filter: none; }
 
 .carta .pie-carta {
   padding: 0.3rem 0.35rem 0.4rem;
