@@ -23,13 +23,18 @@ create table public.puntos (
 
 insert into public.puntos (jugador, puntos) values ('hector', 0), ('adrian', 0);
 
--- La palabra secreta. La web la manda en la cabecera "x-clave-cartas" de cada
--- petición y aquí se comprueba. Sin ella el servidor devuelve la lista vacía y
--- rechaza cualquier escritura.
+-- La palabra secreta. La persona la escribe al entrar, la web la manda en la
+-- cabecera "x-clave-cartas" de cada petición y aquí se comprueba. Sin ella el
+-- servidor devuelve la lista vacía y rechaza cualquier escritura.
 --
--- Esto no es una cerradura de verdad: la palabra viaja dentro de la página, así
--- que quien sepa mirar el código fuente la encuentra. Lo que quita es que entre
--- cualquiera que tropiece con la dirección, que era lo que molestaba.
+-- ¡OJO! Abajo pone LA-PALABRA-VA-AQUI a propósito. **La palabra de verdad no se
+-- escribe en este fichero**, que está en un repositorio público: vive sólo
+-- dentro de la base de datos, en esta función, y en la cabeza de los dos que la
+-- usan. Al ejecutar esto, cámbiala por la buena antes de darle a Run.
+--
+-- Va en minúsculas porque la web pasa a minúsculas lo que se teclea, para que
+-- dé igual cómo se escriba en el móvil. Para cambiarla, se vuelve a ejecutar
+-- este "create or replace" con la nueva y la vieja deja de valer al momento.
 create or replace function public.clave_correcta()
 returns boolean
 language sql
@@ -40,7 +45,7 @@ as $$
   select coalesce(
     nullif(current_setting('request.headers', true), '')::json ->> 'x-clave-cartas',
     ''
-  ) = 'cartasmega77';
+  ) = 'LA-PALABRA-VA-AQUI';
 $$;
 
 revoke all on function public.clave_correcta() from public;

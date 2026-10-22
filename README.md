@@ -25,9 +25,10 @@ siga funcionando dentro de unos años sin tocar nada.
 - Una marca quiere decir **"la he registrado alguna vez"**. Si regalas la carta
   sigue marcada: lo que cuenta es haberla pasado por el álbum.
 - Al entrar se pide **la palabra**, una sola vez por móvil. La comprueba el
-  servidor en cada petición: sin ella no devuelve nada ni deja escribir. No es
-  una cerradura de verdad (la palabra viaja dentro de la página), pero quita
-  que entre cualquiera que tropiece con la dirección.
+  servidor en cada petición: sin ella no devuelve nada ni deja escribir.
+  **La palabra no está en el código**: vive sólo dentro de la base de datos y
+  en la cabeza de los dos. Para cambiarla se vuelve a ejecutar la función
+  `clave_correcta()` de [`supabase.sql`](supabase.sql) con la nueva.
 - Cada uno entra, dice quién es (se guarda en el móvil) y toca una carta para
   marcarla o desmarcarla. Sólo marca las suyas.
 - Las marcas y los puntos viven en **Supabase**, así que los dos ven lo mismo.
