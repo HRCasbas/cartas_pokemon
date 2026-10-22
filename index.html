@@ -12,6 +12,18 @@
 </head>
 <body>
 
+<!-- La palabra. Sin ella el servidor no contesta. Se guarda en el navegador. -->
+<div id="puerta" class="portada oculto">
+  <h1>La palabra</h1>
+  <p>Se te pedirá una sola vez en este móvil.</p>
+  <form id="forma-palabra" class="eleccion">
+    <input id="palabra" type="text" autocomplete="off" autocapitalize="none"
+           autocorrect="off" spellcheck="false" placeholder="la palabra">
+    <button type="submit" class="jugador-boton">Entrar</button>
+  </form>
+  <p id="palabra-mal" class="error oculto">Esa palabra no vale.</p>
+</div>
+
 <!-- Quién eres. Se pregunta una vez y se guarda en el navegador. -->
 <div id="portada" class="portada oculto">
   <h1>¿Quién eres?</h1>

@@ -43,10 +43,26 @@ body {
   text-align: center;
 }
 
+/* La puerta va por encima del "quién eres": primero la palabra. */
+#puerta { z-index: 11; }
+
 .portada h1 { margin: 0; font-size: 1.6rem; }
 .portada p { margin: 0 0 1.5rem; color: var(--texto-suave); }
 
 .eleccion { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+
+.portada input {
+  min-width: 11rem;
+  padding: 1.1rem 1rem;
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--texto);
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+}
+
+.portada .error { margin: 1rem 0 0; color: var(--otro); font-weight: 600; }
 
 .jugador-boton {
   min-width: 9rem;

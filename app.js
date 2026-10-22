@@ -27,9 +27,12 @@ const JUGADORES = {
 
 const CLAVE_JUGADOR = 'cartas.jugador';
 const CLAVE_MARCAS = 'cartas.marcas';
+const CLAVE_PALABRA = 'cartas.palabra';
 const SEGUNDOS_ENTRE_REFRESCOS = 30;
 
 let cartas = [];
+// La palabra que abre la puerta. Va en cada petición y el servidor la comprueba.
+let palabra = '';
 // Conjunto de claves "numero|jugador" con las cartas registradas.
 let marcas = new Set();
 let puntos = { hector: 0, adrian: 0 };
@@ -46,8 +49,20 @@ function cabeceras(extra) {
     apikey: CONFIGURACION.clave,
     Authorization: 'Bearer ' + CONFIGURACION.clave,
     'Content-Type': 'application/json',
+    'x-clave-cartas': palabra,
   };
   return extra ? Object.assign(base, extra) : base;
+}
+
+/*
+ * Sin la palabra buena el servidor devuelve la lista vacía en vez de un error,
+ * y la tabla de puntos siempre tiene dos filas. Así que una lista vacía aquí
+ * sólo puede querer decir que la palabra no vale.
+ */
+function errorDePalabra() {
+  const error = new Error('la palabra no vale');
+  error.esDePalabra = true;
+  return error;
 }
 
 async function leerMarcas() {
@@ -69,6 +84,7 @@ async function leerPuntos() {
   );
   if (!respuesta.ok) throw new Error('la base de datos ha contestado ' + respuesta.status);
   const filas = await respuesta.json();
+  if (filas.length === 0) throw errorDePalabra();
   const leidos = { hector: 0, adrian: 0 };
   for (const fila of filas) {
     if (fila.jugador in leidos) leidos[fila.jugador] = fila.puntos;
@@ -409,10 +425,64 @@ async function refrescar(silencioso) {
     pintarTodo();
     avisar('');
   } catch (error) {
-    if (!silencioso) {
+    if (error.esDePalabra) {
+      pedirPalabra('Esa palabra ya no vale.');
+    } else if (!silencioso) {
       avisar('Sin conexión con la base de datos. Lo que ves es lo último que se guardó en este móvil.');
     }
   }
+}
+
+// ------------------------------------------------------------------- Puerta
+
+function pedirPalabra(queja) {
+  const mal = document.getElementById('palabra-mal');
+  if (queja) {
+    mal.textContent = queja;
+    mal.classList.remove('oculto');
+  } else {
+    mal.classList.add('oculto');
+  }
+  document.getElementById('puerta').classList.remove('oculto');
+  document.getElementById('palabra').focus();
+}
+
+// Se prueba contra el servidor: si contesta con los dos jugadores, la palabra vale.
+async function laPalabraVale(candidata) {
+  const anterior = palabra;
+  palabra = candidata;
+  try {
+    await leerPuntos();
+    return true;
+  } catch (error) {
+    palabra = anterior;
+    if (error.esDePalabra) return false;
+    throw error;
+  }
+}
+
+async function probarPalabra(candidata) {
+  let vale;
+  try {
+    vale = await laPalabraVale(candidata);
+  } catch (error) {
+    avisar('Sin conexión con la base de datos. Prueba otra vez en un momento.');
+    return false;
+  }
+
+  if (!vale) {
+    pedirPalabra('Esa palabra no vale.');
+    return false;
+  }
+
+  try {
+    localStorage.setItem(CLAVE_PALABRA, candidata);
+  } catch (error) {
+    // Sin memoria del navegador se vuelve a preguntar la próxima vez.
+  }
+  document.getElementById('palabra-mal').classList.add('oculto');
+  document.getElementById('puerta').classList.add('oculto');
+  return true;
 }
 
 function elegirJugador(cual) {
@@ -448,15 +518,15 @@ async function arrancar() {
     return;
   }
 
-  let guardado = null;
-  try {
-    guardado = localStorage.getItem(CLAVE_JUGADOR);
-  } catch (error) {
-    // Se preguntará quién eres.
-  }
-
-  if (guardado && JUGADORES[guardado]) elegirJugador(guardado);
-  else document.getElementById('portada').classList.remove('oculto');
+  document.getElementById('forma-palabra').addEventListener('submit', async function (evento) {
+    evento.preventDefault();
+    const escrita = document.getElementById('palabra').value.trim().toLowerCase();
+    if (!escrita) return;
+    if (await probarPalabra(escrita)) {
+      document.getElementById('palabra').value = '';
+      await entrar();
+    }
+  });
 
   document.querySelectorAll('.jugador-boton').forEach(function (boton) {
     boton.addEventListener('click', function () {
@@ -520,6 +590,35 @@ async function arrancar() {
   document.addEventListener('visibilitychange', function () {
     if (!document.hidden) refrescar(true);
   });
+
+  // La puerta va primero. Si la palabra guardada ya no vale, el primer
+  // refresco lo descubre y la vuelve a pedir.
+  let palabraGuardada = null;
+  try {
+    palabraGuardada = localStorage.getItem(CLAVE_PALABRA);
+  } catch (error) {
+    // Se preguntará la palabra.
+  }
+
+  if (palabraGuardada) {
+    palabra = palabraGuardada;
+    await entrar();
+  } else {
+    pedirPalabra('');
+  }
+}
+
+// Ya se ha pasado la puerta: quién eres y a cargar.
+async function entrar() {
+  let guardado = null;
+  try {
+    guardado = localStorage.getItem(CLAVE_JUGADOR);
+  } catch (error) {
+    // Se preguntará quién eres.
+  }
+
+  if (guardado && JUGADORES[guardado]) elegirJugador(guardado);
+  else document.getElementById('portada').classList.remove('oculto');
 
   await refrescar(false);
   arrancarRefrescoAutomatico();
