@@ -7,6 +7,6 @@
  */
 
 const CONFIGURACION = {
-  url: 'PENDIENTE',
-  clave: 'PENDIENTE',
+  url: 'https://jwumnclmdsvcdkbsvikq.supabase.co',
+  clave: 'sb_publishable_dtVvuYMqKCN-omXiBQrEZg_M3hUrA_K',
 };
