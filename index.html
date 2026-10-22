@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#10182b">
+<title>Cartas · Deluxe Pack: Mega</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<!-- Quién eres. Se pregunta una vez y se guarda en el navegador. -->
+<div id="portada" class="portada oculto">
+  <h1>¿Quién eres?</h1>
+  <p>Se te preguntará una sola vez en este móvil.</p>
+  <div class="eleccion">
+    <button class="jugador-boton" data-jugador="hector">Héctor</button>
+    <button class="jugador-boton" data-jugador="adrian">Adrián</button>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="cabecera-fila">
+    <div>
+      <h1>Deluxe Pack: Mega</h1>
+      <p class="sub">402 cartas de diamante · <span id="cuenta-atras"></span></p>
+    </div>
+    <button id="quien-soy" class="quien-soy" title="Cambiar de jugador"></button>
+  </div>
+
+  <div id="aviso" class="aviso oculto"></div>
+
+  <!-- Cómo vamos: lo primero que se ve al entrar. -->
+  <section class="resumen">
+    <div class="progreso"><div id="progreso-relleno" class="progreso-relleno"></div></div>
+    <p class="progreso-texto">
+      <strong id="registradas">—</strong> de 402 registradas entre los dos ·
+      <strong id="faltan-ambos">—</strong> por conseguir
+    </p>
+
+    <div class="marcadores">
+      <div class="marcador">
+        <span class="cifra" id="faltan-yo">—</span>
+        <span class="rotulo" id="rotulo-yo">le faltan</span>
+      </div>
+      <div class="marcador">
+        <span class="cifra" id="faltan-otro">—</span>
+        <span class="rotulo" id="rotulo-otro">le faltan</span>
+      </div>
+    </div>
+
+    <h2>Si gastarais los puntos hoy</h2>
+    <div class="puntos">
+      <label>
+        <span id="etiqueta-puntos-hector">Puntos de Héctor</span>
+        <input id="puntos-hector" type="number" inputmode="numeric" min="0" max="2500" step="5" value="0">
+      </label>
+      <label>
+        <span id="etiqueta-puntos-adrian">Puntos de Adrián</span>
+        <input id="puntos-adrian" type="number" inputmode="numeric" min="0" max="2500" step="5" value="0">
+      </label>
+    </div>
+    <p id="simulacion" class="simulacion">—</p>
+    <p class="letra-pequena">
+      Empezando por las baratas. Cuestan 35 · 70 · 150 · 500 puntos según sean
+      ♦, ♦♦, ♦♦♦ o ♦♦♦♦. Cada sobre abierto da 5 puntos y se guardan hasta 2.500
+      por expansión. Los puntos no caducan cuando cierra el sobre: lo que se
+      acaba es poder abrir más sobres.
+    </p>
+  </section>
+</header>
+
+<div class="barra-filtros">
+  <div class="filtros">
+    <button class="filtro activo" data-filtro="todas">Todas</button>
+    <button class="filtro" data-filtro="ambos">Faltan entre los dos</button>
+    <button class="filtro" data-filtro="yo">Me faltan a mí</button>
+    <button class="filtro" data-filtro="otro">Le faltan a él</button>
+  </div>
+
+  <div class="filtros">
+    <button class="rareza activo" data-rareza="0">Todas</button>
+    <button class="rareza" data-rareza="1">♦</button>
+    <button class="rareza" data-rareza="2">♦♦</button>
+    <button class="rareza" data-rareza="3">♦♦♦</button>
+    <button class="rareza" data-rareza="4">♦♦♦♦</button>
+  </div>
+
+  <input id="buscador" class="buscador" type="search" placeholder="Buscar por nombre o número" autocomplete="off">
+  <p id="resumen-lista" class="resumen-lista"></p>
+</div>
+
+<main id="cuadricula" class="cuadricula"></main>
+
+<p id="sin-resultados" class="sin-resultados oculto">No hay ninguna carta con ese filtro.</p>
+
+<footer class="pie">
+  <button id="actualizar" class="actualizar">Actualizar</button>
+  <p>Las cartas y sus imágenes son de <a href="https://www.serebii.net/tcgpocket/deluxepackmega/" rel="noreferrer">Serebii</a>. Página personal, sin ánimo de lucro.</p>
+</footer>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
