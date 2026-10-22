@@ -31,6 +31,16 @@ siga funcionando dentro de unos años sin tocar nada.
 - La simulación reparte los puntos de los dos juntos, **empezando por las
   cartas baratas**, y dice cuántas quedarían aún por conseguir.
 
+## Dónde vive
+
+- La web: **https://hrcasbas.github.io/cartas_pokemon/** (GitHub Pages, rama `main`).
+- La base de datos: proyecto de Supabase **cartas-pokemon**, `jwumnclmdsvcdkbsvikq`,
+  Irlanda, plan Free. Dos tablas, `marcas` y `puntos`, creadas con
+  [`supabase.sql`](supabase.sql). **No tiene nada que ver con el proyecto de
+  Cashtor**, que es otro distinto y no se toca.
+- El plan Free duerme un proyecto tras una semana sin usarlo. Si un día la web
+  deja de guardar, se despierta con un botón desde el panel de Supabase.
+
 ## Los datos de la expansión
 
 - **402 cartas**, todas de diamante. Las 27 secretas (estrella y corona) no
