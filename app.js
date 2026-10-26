@@ -599,7 +599,9 @@ async function arrancar() {
     }
   });
 
-  document.querySelectorAll('.jugador-boton').forEach(function (boton) {
+  // Sólo los de Héctor y Adrián: "Entrar" y el "Ja" del chiste comparten el
+  // estilo pero no eligen a nadie.
+  document.querySelectorAll('.jugador-boton[data-jugador]').forEach(function (boton) {
     boton.addEventListener('click', function () {
       elegirJugador(boton.dataset.jugador);
     });
